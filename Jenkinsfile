@@ -14,7 +14,6 @@ stage('Install Dependencies') {
             }
         }
     }
-}
 
 stage('Format Check') {
     steps {
@@ -35,10 +34,9 @@ stage('Docker Build') {
 }
 
 stage('Security Scan') {
-    steps {
-        sh 'trivy image --exit-code 1 --severity HIGH,CRITICAL cicd-pipeline-app:1.0'
-    }
+            steps {
+                sh 'trivy image --exit-code 1 --severity HIGH,CRITICAL cicd-pipeline-app:1.0'
+            }
         }
-
-    }   
-}       
+    }
+}
