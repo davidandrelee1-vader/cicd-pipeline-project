@@ -23,7 +23,7 @@ stage('Format Check') {
 
 stage('Test') {
     steps {
-        sh '.venv/bin/pytest'
+        sh 'PYTHONPATH=. .venv/bin/pytest'
     }
 }
 
