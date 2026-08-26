@@ -29,13 +29,13 @@ stage('Test') {
 
 stage('Docker Build') {
     steps {
-        sh 'docker build -t cicd-pipeline-app:1.0 .'
+        sh 'docker build -t cicd-pipeline-app:1.3 .'
     }
 }
 
 stage('Security Scan') {
             steps {
-                sh 'trivy image --timeout 10m --exit-code 1 --severity HIGH,CRITICAL cicd-pipeline-app:1.0'
+                sh 'trivy image --timeout 10m --exit-code 1 --severity HIGH,CRITICAL cicd-pipeline-app:1.3'
             }
         }
     }
