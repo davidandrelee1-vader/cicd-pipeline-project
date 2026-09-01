@@ -3,13 +3,16 @@ FROM jenkins/jenkins:lts-jdk17
 USER root
 
 RUN apt-get update && \
-    apt-get install -y python3 python3-pip python3-venv docker.io wget gnupg && \
+    apt-get install -y python3 python3-pip python3-venv docker.io wget gnupg curl unzip && \
     wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | \
     gpg --dearmor -o /usr/share/keyrings/trivy.gpg && \
     echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" \
     > /etc/apt/sources.list.d/trivy.list && \
     apt-get update && \
     apt-get install -y trivy && \
-    rm -rf /var/lib/apt/lists/*
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip" && \
+    unzip /tmp/awscliv2.zip -d /tmp && \
+    /tmp/aws/install && \
+    rm -rf /tmp/aws /tmp/awscliv2.zip /var/lib/apt/lists/*
 
 USER root

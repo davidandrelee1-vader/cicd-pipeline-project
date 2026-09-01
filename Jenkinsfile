@@ -33,6 +33,17 @@ stage('Docker Build') {
     }
 }
 
+stage('AWS Authentication') {
+    steps {
+        withCredentials([
+            string(credentialsId: 'aws-access-key-id', variable: 'AWS_ACCESS_KEY_ID'),
+            string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
+        ]) {
+            sh 'aws sts get-caller-identity'
+        }
+    }
+}
+
 stage('Security Scan') {
             steps {
                 sh 'trivy image --timeout 10m --exit-code 1 --severity HIGH,CRITICAL --ignore-unfixed cicd-pipeline-app:1.3'
@@ -40,3 +51,4 @@ stage('Security Scan') {
         }
     }
 }
+
