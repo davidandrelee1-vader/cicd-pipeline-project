@@ -40,6 +40,7 @@ stage('AWS Authentication') {
             string(credentialsId: 'aws-secret-access-key', variable: 'AWS_SECRET_ACCESS_KEY')
         ]) {
             sh 'aws sts get-caller-identity'
+            sh 'aws ecr describe-repositories --region us-east-1'
         }
     }
 }
