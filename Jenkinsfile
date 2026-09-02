@@ -53,3 +53,11 @@ stage('Security Scan') {
     }
 }
 
+stage('Push to ECR') {
+    steps {
+        sh 'docker tag cicd-pipeline-app:1.3 925102318251.dkr.ecr.us-east-1.amazonaws.com/cicd-pipeline-app:1.3'
+
+        sh 'docker push 925102318251.dkr.ecr.us-east-1.amazonaws.com/cicd-pipeline-app:1.3'
+    }
+}
+
