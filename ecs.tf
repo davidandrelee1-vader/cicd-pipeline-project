@@ -21,9 +21,22 @@ resource "aws_ecs_task_definition" "app" {
           containerPort = 5000
         }
       ]
+
+      logConfiguration = {
+        logDriver = "awslogs"
+
+        options = {
+          "awslogs-group"         = aws_cloudwatch_log_group.ecs_logs
+          "awslogs-region"        = "us-east-1"
+          "awslogs-stream-prefix" = "ecs"
+        }
+      }
+
     }
   ])
 }
+
+
 
 #MAKING ECS Cluster
 
@@ -39,4 +52,22 @@ resource "aws_ecs_service" "service_app" {
   desired_count   = 2
   launch_type     = "FARGATE"
 
+
+  network_configuration {
+    subnets = [aws_subnet.private_subnet_1.id,
+      aws_subnet.private_subnet_2.id
+    ]
+
+    security_groups = [aws_security_group.ecs_sg.id]
+
+    assign_public_ip = false
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.ecs_tg.arn
+    container_name   = "cicd-pipeline-app"
+    container_port   = 5000
+  }
 }
+
+
