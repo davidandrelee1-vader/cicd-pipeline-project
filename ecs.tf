@@ -26,7 +26,7 @@ resource "aws_ecs_task_definition" "app" {
         logDriver = "awslogs"
 
         options = {
-          "awslogs-group"         = aws_cloudwatch_log_group.ecs_logs
+          "awslogs-group"         = aws_cloudwatch_log_group.ecs_logs.name
           "awslogs-region"        = "us-east-1"
           "awslogs-stream-prefix" = "ecs"
         }
@@ -52,6 +52,7 @@ resource "aws_ecs_service" "service_app" {
   desired_count   = 2
   launch_type     = "FARGATE"
 
+  depends_on = [aws_lb_listener.web_listener]
 
   network_configuration {
     subnets = [aws_subnet.private_subnet_1.id,
